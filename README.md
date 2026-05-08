@@ -19,7 +19,8 @@ A Flask-based task management web application with PostgreSQL, REST APIs, WebSoc
 bash
 
 git clone https://github.com/Rizeria14/TaskFlow.git
-cd YOUR_REPOSITORY
+
+cd TaskFlow
 
 
 ### 2. Create Virtual Environment
@@ -29,6 +30,7 @@ cd YOUR_REPOSITORY
 bash
 
 python -m venv venv
+
 venv\Scripts\activate
 
 
@@ -37,6 +39,7 @@ venv\Scripts\activate
 bash
 
 python3 -m venv venv
+
 source venv/bin/activate
 
 
