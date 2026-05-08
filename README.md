@@ -51,8 +51,7 @@ sql CREATE DATABASE taskmanager;
 
 5. Configure .env
 
-SECRET_KEY=your_secret_key 
-
+SECRET_KEY=your_secret_key
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/taskmanager
 
 6. Run Application
