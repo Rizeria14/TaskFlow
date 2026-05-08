@@ -11,7 +11,7 @@
 </head>
 <body class="dash-body">
 
-  <!-- ── Sidebar ─────────────────────────── -->
+ 
   <aside class="sidebar">
     <div class="sidebar-brand">
       <span class="brand-icon">⬡</span>
@@ -39,7 +39,6 @@
     </div>
   </aside>
 
-  <!-- ── Main ─────────────────────────────── -->
   <main class="main-content">
 
     <!-- Live indicator -->
@@ -48,7 +47,7 @@
       <span id="live-text">Connecting…</span>
     </div>
 
-    <!-- ══ TASKS SECTION ══ -->
+    
     <section id="section-tasks" class="section active">
       <div class="section-header">
         <div>
@@ -58,7 +57,7 @@
         <button class="btn-primary" onclick="openModal()">+ New Task</button>
       </div>
 
-      <!-- Filters -->
+      
       <div class="filter-bar">
         <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
         <button class="filter-btn" onclick="filterTasks('pending', this)">Pending</button>
@@ -70,13 +69,13 @@
         <button class="filter-btn" onclick="filterPriority('low', this)">🟢 Low</button>
       </div>
 
-      <!-- Task list -->
+      
       <div id="task-list" class="task-list">
         <div class="loading-state">Loading tasks…</div>
       </div>
     </section>
 
-    <!-- ══ ANALYTICS SECTION ══ -->
+    
     <section id="section-analytics" class="section">
       <div class="section-header">
         <div>
@@ -86,7 +85,7 @@
       </div>
 
       <div class="analytics-grid" id="analytics-grid">
-        <!-- Cards injected by JS -->
+        
       </div>
 
       <div class="chart-row">
@@ -109,7 +108,7 @@
 
   </main>
 
-  <!-- ── Add / Edit Modal ─────────────────── -->
+  
   <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModal(event)">
     <div class="modal-card">
       <div class="modal-header">
@@ -151,7 +150,7 @@
     </div>
   </div>
 
-  <!-- Notification toast -->
+  
   <div class="toast hidden" id="toast"></div>
 
   <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
