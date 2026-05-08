@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body class="dash-body">
+
+  <!-- ── Sidebar ─────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">TaskFlow</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showSection('tasks')">
+        <span class="nav-icon">◈</span> Tasks
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('analytics')">
+        <span class="nav-icon">◉</span> Analytics
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar">{{ user.username[0].upper() }}</div>
+        <div class="user-info">
+          <div class="user-name">{{ user.username }}</div>
+          <div class="user-email">{{ user.email }}</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">↩ Logout</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ─────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- Live indicator -->
+    <div class="live-bar">
+      <span class="live-dot" id="live-dot"></span>
+      <span id="live-text">Connecting…</span>
+    </div>
+
+    <!-- ══ TASKS SECTION ══ -->
+    <section id="section-tasks" class="section active">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">My Tasks</h2>
+          <p class="section-sub">Manage and track your work</p>
+        </div>
+        <button class="btn-primary" onclick="openModal()">+ New Task</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterTasks('all', this)">All</button>
+        <button class="filter-btn" onclick="filterTasks('pending', this)">Pending</button>
+        <button class="filter-btn" onclick="filterTasks('in_progress', this)">In Progress</button>
+        <button class="filter-btn" onclick="filterTasks('completed', this)">Completed</button>
+        <div class="filter-sep"></div>
+        <button class="filter-btn" onclick="filterPriority('high', this)">🔴 High</button>
+        <button class="filter-btn" onclick="filterPriority('medium', this)">🟡 Medium</button>
+        <button class="filter-btn" onclick="filterPriority('low', this)">🟢 Low</button>
+      </div>
+
+      <!-- Task list -->
+      <div id="task-list" class="task-list">
+        <div class="loading-state">Loading tasks…</div>
+      </div>
+    </section>
+
+    <!-- ══ ANALYTICS SECTION ══ -->
+    <section id="section-analytics" class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Analytics</h2>
+          <p class="section-sub">Pandas & NumPy powered insights</p>
+        </div>
+      </div>
+
+      <div class="analytics-grid" id="analytics-grid">
+        <!-- Cards injected by JS -->
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card">
+          <h3 class="chart-title">Status Breakdown</h3>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120" id="status-donut">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-2)" stroke-width="16"/>
+            </svg>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Priority Distribution</h3>
+          <div class="bar-chart" id="priority-bars"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Add / Edit Modal ─────────────────── -->
+  <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title">New Task</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="field-group">
+        <label>Title *</label>
+        <input type="text" id="task-title" placeholder="What needs to be done?" />
+      </div>
+      <div class="field-group">
+        <label>Description</label>
+        <textarea id="task-desc" placeholder="Add details…" rows="3"></textarea>
+      </div>
+      <div class="modal-row">
+        <div class="field-group">
+          <label>Priority</label>
+          <select id="task-priority">
+            <option value="low">🟢 Low</option>
+            <option value="medium" selected>🟡 Medium</option>
+            <option value="high">🔴 High</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Status</label>
+          <select id="task-status">
+            <option value="pending">Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" id="modal-save-btn" onclick="saveTask()">Save Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification toast -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
